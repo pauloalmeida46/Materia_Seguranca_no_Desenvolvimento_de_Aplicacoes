@@ -1,0 +1,58 @@
+Exercício 1:
+Como verificar o status atual do firewall e quais regras estão ativas? (em UFW e iptables).
+
+UFW:
+sudo ufw status
+sudo ufw status verbose
+
+iptables:
+sudo iptables -L
+sudo iptables -L -v
+sudo iptables -L -n
+
+-----------------------------------------------------------------------------------------
+
+Exercício 2:
+Como habilitar o UFW? E como desabilitar?
+Por que iptables não tem um comando enable/disable simples? O que fazer em vez disso?
+
+UFW:
+# Habilitar
+sudo ufw enable
+
+# Desabilitar
+sudo ufw disable
+
+iptables:
+# Não existe enable/disable direto
+
+# "Desabilitar" (limpar regras)
+sudo iptables -F
+
+# Resetar políticas (opcional)
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 3:
+Como configurar a política padrão para negar (DROP/DENY) todo o tráfego que entra (INPUT)?
+
+UFW:
+sudo ufw default deny incoming
+
+iptables:
+sudo iptables -P INPUT DROP
+
+-----------------------------------------------------------------------------------------
+
+Exercício 4:
+Como configurar a política padrão para permitir (ALLOW) todo o tráfego que sai (OUTPUT)?
+
+UFW:
+sudo ufw default allow outgoing
+
+iptables:
+sudo iptables -P OUTPUT ACCEPT
+

@@ -1,0 +1,30 @@
+Exercício 10:
+Como negar (DENY/DROP) explicitamente o tráfego de entrada na porta 3306/tcp (MySQL), fazendo o pacote desaparecer?
+
+UFW:
+sudo ufw deny 3306/tcp
+
+iptables:
+sudo iptables -A INPUT -p tcp --dport 3306 -j DROP
+
+-----------------------------------------------------------------------------------------
+
+Exercício 11:
+Como rejeitar (REJECT) explicitamente o tráfego de entrada na porta 5432/tcp (PostgreSQL), informando ativamente ao remetente que a porta está fechada?
+
+UFW:
+sudo ufw reject 5432/tcp
+
+iptables:
+sudo iptables -A INPUT -p tcp --dport 5432 -j REJECT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 12:
+Como bloquear todo o tráfego de entrada vindo do endereço IP 1.2.3.4?
+
+UFW:
+sudo ufw deny from 1.2.3.4
+
+iptables:
+sudo iptables -A INPUT -s 1.2.3.4 -j DROP

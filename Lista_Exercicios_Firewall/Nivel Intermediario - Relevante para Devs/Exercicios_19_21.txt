@@ -1,0 +1,53 @@
+Exercício 19:
+Como proteger o SSH (porta 22) limitando o número de novas tentativas de conexão de um mesmo IP?
+
+UFW:
+sudo ufw limit 22/tcp
+
+iptables:
+# Permitir conexões dentro do limite
+sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW -m limit --limit 3/minute --limit-burst 5 -j ACCEPT
+
+# Bloquear excesso (opcional, dependendo da política)
+sudo iptables -A INPUT -p tcp --dport 22 -j DROP
+
+-----------------------------------------------------------------------------------------
+
+Exercício 20:
+Como criar uma regra que registra (LOG) todas as tentativas de conexão na porta do seu banco de dados (ex: 5432/tcp) antes de bloqueá-las?
+
+UFW:
+# Ativar logging geral
+sudo ufw logging on
+
+# Bloquear a porta (já será logado)
+sudo ufw deny 5432/tcp
+
+iptables:
+# Logar tentativas
+sudo iptables -A INPUT -p tcp --dport 5432 -j LOG --log-prefix "DB ACCESS: "
+
+# Bloquear depois de logar
+sudo iptables -A INPUT -p tcp --dport 5432 -j DROP
+
+-----------------------------------------------------------------------------------------
+
+Exercício 21:
+(Cenário de Dev: rodar app na porta 8080, expor na 80)
+Como direcionar todo o tráfego que chega na porta 80 do servidor para a porta 8080 local?
+
+UFW:
+# Editar arquivo de configuração
+sudo nano /etc/ufw/before.rules
+
+# Adicionar antes das regras:
+*nat
+:PREROUTING ACCEPT [0:0]
+-A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+COMMIT
+
+# Depois recarregar
+sudo ufw reload
+
+iptables:
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080

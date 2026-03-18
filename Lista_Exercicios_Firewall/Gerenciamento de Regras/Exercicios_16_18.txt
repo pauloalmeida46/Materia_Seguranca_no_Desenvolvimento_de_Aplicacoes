@@ -1,0 +1,40 @@
+Exercício 16:
+Como listar todas as regras de entrada (INPUT) com seus respectivos números de linha?
+
+UFW:
+sudo ufw status numbered
+
+iptables:
+sudo iptables -L INPUT --line-numbers
+
+-----------------------------------------------------------------------------------------
+
+Exercício 17:
+Usando a lista numerada do exercício anterior, como deletar a regra de número 5 da cadeia de entrada?
+
+UFW:
+sudo ufw delete 5
+
+iptables:
+sudo iptables -D INPUT 5
+
+-----------------------------------------------------------------------------------------
+
+Exercício 18:
+Como resetar o firewall ao seu estado original (limpa todas as regras, contadores e zera as políticas)?
+
+UFW:
+sudo ufw reset
+
+iptables:
+# Limpar regras
+sudo iptables -F
+
+# Limpar regras de outras tabelas (boa prática)
+sudo iptables -X
+sudo iptables -Z
+
+# Resetar políticas
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT

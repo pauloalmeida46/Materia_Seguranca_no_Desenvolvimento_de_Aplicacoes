@@ -1,0 +1,30 @@
+Exercício 13:
+Como permitir o acesso à porta 22/tcp (SSH) apenas para o endereço IP 192.168.1.100?
+
+UFW:
+sudo ufw allow from 192.168.1.100 to any port 22 proto tcp
+
+iptables:
+sudo iptables -A INPUT -p tcp -s 192.168.1.100 --dport 22 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício:
+Como permitir o acesso à porta 3306 (MySQL) apenas se a conexão vier da sua rede interna (interface eth1)?
+
+UFW:
+sudo ufw allow in on eth1 to any port 3306 proto tcp
+
+iptables:
+sudo iptables -A INPUT -i eth1 -p tcp --dport 3306 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício:
+Como bloquear pacotes que são considerados INVALID?
+
+UFW:
+# UFW já trata isso automaticamente internamente (não precisa regra manual)
+
+iptables:
+sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP

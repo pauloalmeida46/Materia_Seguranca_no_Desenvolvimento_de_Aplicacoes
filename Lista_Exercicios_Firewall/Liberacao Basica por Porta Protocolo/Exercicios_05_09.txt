@@ -1,0 +1,64 @@
+Exercício 5:
+Como permitir conexões de entrada na porta 22/tcp (SSH)?
+
+UFW:
+sudo ufw allow 22/tcp
+# ou
+sudo ufw allow ssh
+
+iptables:
+sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 6:
+Como permitir conexões de entrada na porta 80/tcp (HTTP)?
+
+UFW:
+sudo ufw allow 80/tcp
+# ou
+sudo ufw allow http
+
+iptables:
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 7:
+Como permitir conexões de entrada na porta 8080/tcp (uma porta comum para aplicações web/API)?
+
+UFW:
+sudo ufw allow 8080/tcp
+
+iptables:
+sudo iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 8:
+Como permitir conexões de entrada na porta 53/udp (DNS)?
+
+UFW:
+sudo ufw allow 53/udp
+
+iptables:
+sudo iptables -A INPUT -p udp --dport 53 -j ACCEPT
+
+-----------------------------------------------------------------------------------------
+
+Exercício 9:
+Como permitir todo o tráfego na interface de loopback (lo)?
+Como permitir o tráfego de conexões já estabelecidas (ESTABLISHED,RELATED)?
+
+UFW:
+# Loopback já é permitido por padrão no UFW (não precisa configurar)
+
+# Conexões estabelecidas também já são tratadas automaticamente pelo UFW
+
+iptables:
+# Liberar loopback
+sudo iptables -A INPUT -i lo -j ACCEPT
+
+# Permitir conexões já estabelecidas
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
